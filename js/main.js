@@ -49,7 +49,7 @@ function renderHeroBanner() {
                 <a href="${basePath}product-list/product-list.html" class="btn btn--primary btn--lg">
                     Mua ngay
                 </a>
-                <a href="${basePath}build-pc/build-pc.html" class="btn btn--outline btn--lg">
+                <a href="${basePath}product-list" class="btn btn--outline btn--lg">
                     &#128295; Tự Build PC
                 </a>
             </div>

@@ -38,12 +38,11 @@ function formatCurrency(amount) {
  */
 function getGuestNavLinks() {
     return `
-        <a href="${basePath}index.html" class="nav-link">Trang chủ</a>
-        <a href="${basePath}product-list/product-list.html" class="nav-link">Sản phẩm</a>
-        <a href="${basePath}build-pc/build-pc.html" class="nav-link">Build PC</a>
-        <a href="${basePath}contact/contact.html" class="nav-link">Liên hệ</a>
-        <a href="${basePath}login/login.html" class="nav-link">Đăng nhập</a>
-        <a href="${basePath}sign-up/sign-up.html" class="nav-link nav-link--register">Đăng ký</a>
+        <a href="${basePath}home" class="nav-link">Trang chủ</a>
+        <a href="${basePath}product-list" class="nav-link">Sản phẩm</a>
+        <a href="${basePath}contact" class="nav-link">Liên hệ</a>
+        <a href="${basePath}login" class="nav-link">Đăng nhập</a>
+        <a href="${basePath}sign-up" class="nav-link nav-link--register">Đăng ký</a>
     `;
 }
 
@@ -83,15 +82,14 @@ function loadHeader() {
                 : `<span class="cart-badge cart-badge--hidden" id="header-cart-count"></span>`;
 
             navLinks = `
-                <a href="${basePath}index.html" class="nav-link">Trang chủ</a>
-                <a href="${basePath}product-list/product-list.html" class="nav-link">Sản phẩm</a>
-                <a href="${basePath}build-pc/build-pc.html" class="nav-link">Build PC</a>
-                <a href="${basePath}contact/contact.html" class="nav-link">Liên hệ</a>
-                <a href="${basePath}my-account/my-account.html" class="nav-link nav-link--account">
+                <a href="${basePath}home" class="nav-link">Trang chủ</a>
+                <a href="${basePath}product-list" class="nav-link">Sản phẩm</a>
+                <a href="${basePath}contact" class="nav-link">Liên hệ</a>
+                <a href="${basePath}my-account" class="nav-link nav-link--account">
                     👤 ${currentUser.fullname}
                 </a>
                 <a href="#" id="logout-link" class="nav-link">Đăng xuất</a>
-                <a href="${basePath}cart/cart.html" class="nav-link nav-link--cart">
+                <a href="${basePath}cart" class="nav-link nav-link--cart">
                     🛒 Giỏ hàng ${cartBadge}
                 </a>
             `;
@@ -110,7 +108,7 @@ function loadHeader() {
         <div class="header-inner container">
             <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Mở menu">&#9776;</button>
 
-            <a href="${basePath}index.html" class="header-logo">
+            <a href="${basePath}home" class="header-logo">
                 <span class="logo-icon">&#128187;</span>
                 <span class="logo-text">${BRAND_NAME}</span>
             </a>
@@ -225,11 +223,11 @@ function loadFooter() {
                 <div class="footer-col">
                     <h4 class="footer-heading">Danh mục</h4>
                     <ul class="footer-links">
-                        <li><a href="${basePath}product-list/product-list.html?category=PC+Gaming">PC Gaming</a></li>
-                        <li><a href="${basePath}product-list/product-list.html?category=PC+V%C4%83n+Ph%C3%B2ng">PC Văn Phòng</a></li>
-                        <li><a href="${basePath}product-list/product-list.html?category=CPU">CPU</a></li>
-                        <li><a href="${basePath}product-list/product-list.html?category=VGA">VGA (Card đồ họa)</a></li>
-                        <li><a href="${basePath}build-pc/build-pc.html">Tự Build PC</a></li>
+                        <li><a href="${basePath}product-list?category=PC+Gaming">PC Gaming</a></li>
+                        <li><a href="${basePath}product-list?category=PC+V%C4%83n+Ph%C3%B2ng">PC Văn Phòng</a></li>
+                        <li><a href="${basePath}product-list?category=CPU">CPU</a></li>
+                        <li><a href="${basePath}product-list?category=VGA">VGA (Card đồ họa)</a></li>
+                        <li><a href="${basePath}product-list">Tự Build PC</a></li>
                     </ul>
                 </div>
 
