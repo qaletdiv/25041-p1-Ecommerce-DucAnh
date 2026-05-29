@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm — TechWorld PC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../home/home.css">
+    <link rel="stylesheet" href="product-list.css">
+</head>
+<body>
+    <header id="main-header" class="header" role="banner">
+        <!-- Render dong bang js -->
+    </header>
+    <main id="main-content">
+        <section class="pl-hero">
+            <div class="container">
+                <h1 id="page-title">Danh Sách Sản Phẩm</h1>
+                <p id="page-subtitle">tất cả sản phẩm</p>
+
+                <!--thong bao ket qua tim kiem-->
+                <div id="search-result-info" class="search-result-info">
+                    <div class="search-info-content">
+                        <p>Đang hiển thị kết quả tìm kiếm cho: <strong id="search-keyword"></strong></p>
+                        <button id="clear-search" class="btn btn-outline">Xóa tìm kiếm</button>
+                    </div>
+                </div>
+
+                <!--Filter-->
+                <div id="active-filter" class="active-filter" style="display: none;">
+                    <div class="container active-filter__inner">
+                        <span class="active-filter__label">Đang lọc</span>
+                        <div id="filter-tags" class="filter-tags"></div>
+                        <button id="clear-all-filters" class="btn btn--ghost btn--sm">Xóa tất cả</button>
+                    </div>
+                </div>
+
+                <div class="pl-body">
+                    <div class="container pl-body__inner">
+                        <!--Sidebaer bo loc-->
+                        <aside class="filter-sidebar" id="filter-sidebar">
+                            <div class="filter-sidebar__header">
+                                <h3 class="filter-sidebar__title">Bộ lọc</h3>
+                                <button id="toggle-filters" class="filter-sidebar__toggle" aria-label="Ẩn/Hiện bộ lọc">
+                                    <span class="icon">▼</span>
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
