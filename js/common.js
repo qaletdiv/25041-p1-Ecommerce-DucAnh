@@ -1,6 +1,5 @@
 // js/common.js
-// File dùng chung cho toàn bộ website TechWorld PC.
-// Chứa các hàm tiện ích, render header/footer và nạp dữ liệu ban đầu.
+
 
 const basePath = '../';
 
@@ -43,9 +42,6 @@ function getGuestNavLinks() {
 
 /**
  * Render toàn bộ nội dung header vào phần tử có id="main-header".
- * - Hiển thị nav khác nhau tùy theo trạng thái đăng nhập.
- * - Tính và hiển thị số lượng sản phẩm trong giỏ hàng của user hiện tại.
- * - Gắn sự kiện: hamburger menu, đăng xuất, tìm kiếm.
  */
 function loadHeader() {
     const header = document.getElementById('main-header');
