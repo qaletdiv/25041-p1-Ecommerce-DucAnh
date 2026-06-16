@@ -368,7 +368,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     /* 1 cot tren mobile */
     .cart-layout {
         grid-template-columns: 1fr;
