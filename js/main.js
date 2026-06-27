@@ -34,7 +34,7 @@ function renderHeroBanner() {
                 NVIDIA, Samsung, Kingston và nhiều hơn nữa.
             </p>
             <div class="hero-actions">
-                <a href="${basePath}product-list/product-list.html" class="btn btn--primary btn--lg">
+                <a href="${basePath}product-list" class="btn btn--primary btn--lg">
                     Mua ngay
                 </a>
                 <a href="${basePath}product-list" class="btn btn--outline btn--lg">
@@ -281,9 +281,6 @@ function renderFeaturedProducts() {
 // =============================================================
 
 /**
- * Thêm nhanh sản phẩm vào giỏ hàng ngay từ trang chủ.
- * Nếu chưa đăng nhập → chuyển đến trang login.
- * Nếu đã có trong giỏ → tăng số lượng lên 1.
  * @param {number} productId
  */
 window.handleAddToCart = function(productId) {

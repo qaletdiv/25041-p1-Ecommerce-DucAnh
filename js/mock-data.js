@@ -32,7 +32,7 @@ const mockUsers = [
         username: 'namdang',
         password: '123456',
         fullname: 'Đặng Hoài Nam',
-        email: 'hoainam@outlook.com',
+        email: 'hoainam@gmail.com',
         phone: '0903003003',
         address: 'Thanh Liệt, Thanh Trì, Hà Nội ',
         role: 'customer',

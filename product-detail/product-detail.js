@@ -1,7 +1,9 @@
 // product-detail/product-detail.js
 
-let currentProduct  = null; 
-let selectedQuantity = 1; 
+let currentProduct  = null;
+let selectedQuantity = 1;
+let allProductsCache = [];  
+
 document.addEventListener('DOMContentLoaded', function () {
     loadData();
     loadHeader();
@@ -21,13 +23,16 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function loadProductDetail(productId) {
-    // Lay mang products tu loclastorage
+    // Lay mang products tu localstorage
     let products = [];
     try {
         products = JSON.parse(localStorage.getItem('products')) || [];
     } catch (e) {
         console.error('[product-detail.js] Lỗi đọc products:', e);
     }
+
+    // Lưu lại để dùng cho phần "Sản phẩm liên quan" bên dưới
+    allProductsCache = products;
 
     // Tim san pham co id khop
     currentProduct = products.find(function (p) { return p.id == productId; });
@@ -44,6 +49,31 @@ function loadProductDetail(productId) {
 
     // Render giao dien
     renderProductDetail();
+
+    // Render sản phẩm liên quan (chức năng mới)
+    renderRelatedProducts();
+}
+
+
+// CHỨC NĂNG 1: THƯ VIỆN NHIỀU HÌNH ẢNH
+
+/**
+ * @returns {Array} 
+ */
+function getProductImages() {
+    // Trường hợp 1: Product đã có mảng images với nhiều ảnh thật
+    if (currentProduct.images && Array.isArray(currentProduct.images) && currentProduct.images.length > 1) {
+        return currentProduct.images;
+    }
+
+    // Trường hợp 2: Chỉ có 1 ảnh duy nhất (image hoặc images[0])
+    const singleImage = (currentProduct.images && currentProduct.images[0]) || currentProduct.image;
+
+    if (!singleImage) {
+        return []; // Không có ảnh nào cả
+    }
+
+    return [singleImage, singleImage, singleImage, singleImage];
 }
 
 // Render chi tiet san pham
@@ -51,17 +81,17 @@ function renderProductDetail() {
     const container = document.getElementById('product-detail-container');
     if (!container) return;
 
-    const images = (currentProduct.images && currentProduct.images.length > 0)
-        ? currentProduct.images
-        : (currentProduct.image ? [currentProduct.image] : []);
+    // Lấy mảng ảnh (thật hoặc demo) cho gallery
+    const images = getProductImages();
 
     const mainImgSrc = images.length > 0
         ? basePath + images[0]
         : basePath + 'images/placeholder-product.jpg';
 
+    // Tạo HTML cho dãy thumbnail — giới hạn tối đa 4 ảnh nhỏ theo yêu cầu
     let thumbnailsHTML = '';
     if (images.length > 1) {
-        images.slice(0, 5).forEach(function (img, index) {
+        images.slice(0, 4).forEach(function (img, index) {
             thumbnailsHTML += `
                 <img src="${basePath + img}"
                      alt="${currentProduct.name} ảnh ${index + 1}"
@@ -217,15 +247,19 @@ function renderProductDetail() {
 // Gan su kien
 function attachEvents(images) {
 
+    // --- Click vào thumbnail → đổi ảnh chính (có hiệu ứng fade) ---
     const thumbList = document.getElementById('thumb-list');
     if (thumbList) {
         thumbList.addEventListener('click', function (e) {
             const thumb = e.target.closest('.pd-thumbnail');
             if (!thumb) return;
 
-            const mainImg = document.getElementById('main-product-img');
-            if (mainImg) mainImg.src = thumb.dataset.src;
+            // Nếu đang click vào ảnh đang active rồi thì không cần làm gì
+            if (thumb.classList.contains('pd-thumbnail--active')) return;
 
+            changeMainImage(thumb.dataset.src);
+
+            // Cập nhật trạng thái active cho thumbnail
             document.querySelectorAll('.pd-thumbnail').forEach(function (t) {
                 t.classList.remove('pd-thumbnail--active');
             });
@@ -262,9 +296,26 @@ function attachEvents(images) {
     });
 }
 
-// =============================================================
+/**
+ * @param {string} newSrc 
+ */
+function changeMainImage(newSrc) {
+    const mainImg = document.getElementById('main-product-img');
+    if (!mainImg) return;
+
+    // Bước 1: Làm mờ ảnh hiện tại (CSS sẽ xử lý transition opacity)
+    mainImg.classList.add('pd-image__main--fade-out');
+
+    // Bước 2: Sau khi mờ xong (200ms khớp với CSS transition), đổi ảnh và làm rõ lại
+    setTimeout(function () {
+        mainImg.src = newSrc;
+        mainImg.classList.remove('pd-image__main--fade-out');
+    }, 200);
+}
+
+
 // THÊM VÀO GIỎ HÀNG
-// =============================================================
+
 function addToCart() {
     // Kiem tra dang nhap
     const currentUserJson = localStorage.getItem('currentUser');
@@ -388,5 +439,72 @@ function showNotFound() {
                 ← Quay lại danh sách sản phẩm
             </a>
         </div>
+    `;
+}
+
+
+// CHỨC NĂNG 2: SẢN PHẨM LIÊN QUAN (RELATED PRODUCTS)
+
+function renderRelatedProducts() {
+    const section = document.getElementById('related-products-section');
+    const grid    = document.getElementById('related-products-grid');
+    if (!section || !grid || !currentProduct) return;
+
+    // Bước 1: Lọc ra các sản phẩm CÙNG categoryId với sản phẩm hiện tại và LOẠI TRỪ chính sản phẩm đang xem (so sánh theo id)
+    const related = allProductsCache
+        .filter(function (item) {
+            return item.categoryId == currentProduct.categoryId   // cùng danh mục
+                && item.id != currentProduct.id;                  // không phải sp đang xem
+        })
+        .slice(0, 4); // Bước 2: Giới hạn tối đa 4 sản phẩm
+
+    // Nếu không tìm được sản phẩm liên quan nào → ẩn cả section đi
+    if (related.length === 0) {
+        section.style.display = 'none';
+        return;
+    }
+
+    // Có sản phẩm liên quan → hiện section và render ra grid
+    section.style.display = 'block';
+
+    grid.innerHTML = related.map(function (product) {
+        return buildRelatedProductCardHTML(product);
+    }).join('');
+}
+
+/**
+ * @param {Object} product
+ */
+function buildRelatedProductCardHTML(product) {
+    const imgSrc = product.image
+        ? basePath + product.image
+        : basePath + 'images/placeholder-product.jpg';
+
+    // Đường dẫn chuyển đến đúng trang chi tiết của sản phẩm này
+    const detailUrl = basePath + 'product-detail/index.html?id=' + product.id;
+
+    // Giá — ưu tiên hiển thị giá khuyến mãi nếu có
+    const hasDiscount = product.discountPrice && product.discountPrice < product.price;
+    const priceHTML = hasDiscount
+        ? `<span class="product-price__current">${formatCurrency(product.discountPrice)}</span>
+           <span class="product-price__original">${formatCurrency(product.price)}</span>`
+        : `<span class="product-price__current">${formatCurrency(product.price)}</span>`;
+
+    return `
+        <article class="product-card" data-product-id="${product.id}">
+            <a href="${detailUrl}" class="product-card__img-wrap">
+                <img src="${imgSrc}"
+                     alt="${product.name}"
+                     class="product-card__img"
+                     loading="lazy"
+                     onerror="this.src='${basePath}images/placeholder-product.jpg'">
+            </a>
+            <div class="product-card__body">
+                <a href="${detailUrl}" class="product-card__name" title="${product.name}">
+                    ${product.name}
+                </a>
+                <div class="product-price">${priceHTML}</div>
+            </div>
+        </article>
     `;
 }

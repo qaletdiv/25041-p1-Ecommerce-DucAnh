@@ -52,11 +52,15 @@
     height: 100%;
     object-fit: contain;
     padding: 16px;
-    transition: transform 0.3s;
+    transition: transform 0.3s, opacity 0.2s;
 }
 
 .pd-image__main:hover {
     transform: scale(1.04);
+}
+
+.pd-image__main--fade-out {
+    opacity: 0;
 }
 
 /* Thumbnail */
